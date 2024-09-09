@@ -14,6 +14,10 @@ const quizRoutes = require("./router/quizRoutes");
 app.use("/api",quizRoutes);
 const questionRoutes = require("./router/questionRoutes");
 app.use("/api",questionRoutes);
+const useranswerRoutes = require("./router/UserAnswerRoutes");
+app.use("/api",useranswerRoutes);
+const resultRoutes = require("./router/resultRouter");
+app.use("/api",resultRoutes);
 
 // Protected routes using authenticateToken middleware
 const authenticateToken = require("./middleware/authenticateToken");

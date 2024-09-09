@@ -48,8 +48,8 @@ const registerUser = async (req, res) => {
 
 // Generate JWT token
 const generateAccessToken = (user) => {
-    const payload = { userId: user._id.toString() };
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '3h' });
+    const payload = { userId: user._id.toString(), role: user.role };
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '12h' });
 };
 
 // User login

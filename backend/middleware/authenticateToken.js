@@ -1,30 +1,21 @@
 const jwt = require('jsonwebtoken');
-const User = require('../model/user');
 
-const authenticateToken = async (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader || !authHeader.startsWith('Bearer')) {
-        return res.status(401).json({ success: false, msg: 'No or malformed token provided' });
-    }
-    const token = authHeader.split(' ')[1];
+const authenticateToken = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
 
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ success: false, msg: 'Invalid token' });
-        }
+  if (!token) {
+    return res.status(401).json({ success: false, msg: 'No token provided' });
+  }
 
-        try {
-            const user = await User.findById(decoded.userId).select('-password');
-            if (!user) {
-                return res.status(404).json({ success: false, msg: 'User not found' });
-            }
-            req.user = user;
-            next();
-        } catch (error) {
-            res.status(500).json({ success: false, msg: error.message });
-        }
-    });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Decodes JWT token
+    req.user = decoded; // Attaches user data to req.user
+    next(); // Proceeds to next middleware
+  } catch (error) {
+    return res.status(401).json({ success: false, msg: 'Invalid token' });
+  }
 };
 
 module.exports = authenticateToken;
+
 

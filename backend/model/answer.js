@@ -21,8 +21,7 @@ const userAnswerSchema = new Schema({
     },
     selectedAnswer: {
       type: String,
-      enum: ['option_1', 'option_2', 'option_3', 'option_4'],
-      required: true
+      required: true,
     },
     createdAt: {
       type: Date,

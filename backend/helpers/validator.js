@@ -57,11 +57,6 @@ exports.quizValidationRules = [
 
 
 exports.questionValidationRules = [
-    check('quizId')
-        .notEmpty()
-        .withMessage('Quiz ID is required')
-        .isMongoId()
-        .withMessage('Invalid Quiz ID format'),
     check('questionText')
         .notEmpty()
         .withMessage('Question text is required'),
@@ -71,9 +66,28 @@ exports.questionValidationRules = [
     check('correctAnswer')
         .notEmpty()
         .withMessage('Correct answer is required')
-        .isIn(['option_1', 'option_2', 'option_3', 'option_4'])
-        .withMessage('Correct answer must be one of the options: option_1, option_2, option_3, or option_4'),
 ];
+
+
+exports.userAnswerValidationRules = [
+    check('userId')
+        .isMongoId().withMessage('Invalid user ID format')
+        .not().isEmpty().withMessage('User ID is required'),
+
+    check('quizId')
+        .isMongoId().withMessage('Invalid quiz ID format')
+        .not().isEmpty().withMessage('Quiz ID is required'),
+
+    check('questionId')
+        .isMongoId().withMessage('Invalid question ID format')
+        .not().isEmpty().withMessage('Question ID is required'),
+
+    check('selectedAnswer')
+        .isString().withMessage('Selected answer must be a string')
+        .not().isEmpty().withMessage('Selected answer is required'),
+];
+
+
 
 
 
